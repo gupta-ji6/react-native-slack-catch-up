@@ -148,6 +148,38 @@ const ThreadStack: React.FC<Props> = ({
     ),
   }));
 
+  const handleMarkRead = () => {
+    'worklet';
+    currentThreadCardTranslateX.value = withTiming(
+      windowWidth,
+      { duration: 250 },
+      (isFinished) => {
+        if (isFinished) {
+          // Update the current and next thread indices. Since gestures run on UI thread, we need to update JS state with runOnJS function
+          runOnJS(setCurrentThreadIndex)(currentThreadIndex + 1);
+        }
+      }
+    );
+
+    runOnJS(onSwipeRight)(currentThread);
+  };
+
+  const handleMarkUnread = () => {
+    'worklet';
+    currentThreadCardTranslateX.value = withTiming(
+      -windowWidth,
+      { duration: 250 },
+      (isFinished) => {
+        if (isFinished) {
+          // Update the current and next thread indices. Since gestures run on UI thread, we need to update JS state with runOnJS function
+          runOnJS(setCurrentThreadIndex)(currentThreadIndex + 1);
+        }
+      }
+    );
+
+    runOnJS(onSwipeLeft)(currentThread);
+  };
+
   return (
     <React.Fragment>
       <View>
@@ -177,7 +209,12 @@ const ThreadStack: React.FC<Props> = ({
         ) : null}
       </View>
 
-      {currentThread ? <ThreadActions /> : null}
+      {currentThread ? (
+        <ThreadActions
+          onMarkRead={handleMarkRead}
+          onMarkUnread={handleMarkUnread}
+        />
+      ) : null}
 
       {!currentThread && !nextThread ? <StackEnd /> : null}
     </React.Fragment>

@@ -13,10 +13,10 @@ const CatchUp = () => {
           <ThreadStack
             data={threads}
             onSwipeLeft={(item) => {
-              // console.warn('left, ', item.id)
+              // console.warn('left, ', item.id);
             }}
             onSwipeRight={(item) => {
-              // console.warn('right', item.id)
+              // console.warn('right', item.id);
             }}
           />
         </View>
