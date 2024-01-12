@@ -9,18 +9,24 @@ import Button from './Button';
 
 interface Props {
   onReset: () => void;
+  emoji?: string;
+  heading?: string;
 }
 
-const StackEnd: React.FC<Props> = ({ onReset }) => {
+const StackEnd: React.FC<Props> = ({
+  onReset,
+  emoji = '🙌',
+  heading = 'All Caught Up.',
+}) => {
   return (
     <Animated.View
       entering={ZoomIn}
       style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }]}
     >
       <View style={{ alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-        <Text style={{ fontSize: 64 }}>🙌</Text>
+        <Text style={{ fontSize: 64 }}>{emoji}</Text>
         <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold' }}>
-          All Caught Up.
+          {heading}
         </Text>
       </View>
 

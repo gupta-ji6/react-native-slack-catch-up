@@ -26,6 +26,10 @@ interface Props {
   showActionButtons?: boolean;
   showReset?: boolean;
   allowSwipe?: boolean;
+  stackEnd: {
+    emoji?: string;
+    heading?: string;
+  };
 }
 
 const ThreadStack: React.FC<Props> = ({
@@ -35,6 +39,7 @@ const ThreadStack: React.FC<Props> = ({
   allowSwipe = true,
   showActionButtons = true,
   showReset = true,
+  stackEnd = { emoji: '🙌', heading: 'All Caught Up.' },
 }) => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
   const [nextThreadIndex, setNextThreadIndex] = useState(
@@ -70,9 +75,6 @@ const ThreadStack: React.FC<Props> = ({
     .onTouchesUp(() => {
       currentThreadCardScale.value = withSpring(1);
     })
-    // .onStart((event) => {
-    //   event.absoluteX = currentThreadCardTranslateX.value;
-    // })
     .onChange((e) => {
       if (!allowSwipe) return;
 
@@ -238,8 +240,12 @@ const ThreadStack: React.FC<Props> = ({
         />
       ) : null}
 
-      {!currentThread && !nextThread && showReset ? (
-        <StackEnd onReset={handleReset} />
+      {showReset && !currentThread && !nextThread ? (
+        <StackEnd
+          onReset={handleReset}
+          emoji={stackEnd.emoji}
+          heading={stackEnd.heading}
+        />
       ) : null}
     </React.Fragment>
   );
