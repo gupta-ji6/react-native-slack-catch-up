@@ -14,6 +14,7 @@ import {
 } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Button from './components/Button';
+import ThreadCard from './components/ThreadCard';
 
 const threads = [
   {
@@ -43,7 +44,7 @@ const threads = [
   },
 ];
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth } = Dimensions.get('window');
 
 const CatchUp = () => {
   const translateX = useSharedValue(0);
@@ -79,33 +80,21 @@ const CatchUp = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <GestureDetector gesture={panGesture}>
-            <Animated.View style={[styles.card, cardStyle]}>
-              <View
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: threads[0].backgroundColor,
-                  borderTopLeftRadius: 18,
-                  borderTopRightRadius: 18,
-                  borderBottomLeftRadius: 18,
-                  borderBottomRightRadius: 18,
-                }}
-              />
-            </Animated.View>
-          </GestureDetector>
+        <View style={styles.root}>
+          <View>
+            <ThreadCard
+              style={{ backgroundColor: 'green', position: 'absolute' }}
+              thread={}
+            />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingTop: 20,
-              paddingHorizontal: 20,
-              columnGap: 10,
-            }}
-          >
+            <GestureDetector gesture={panGesture}>
+              <Animated.View style={[cardStyle]}>
+                <ThreadCard thread={} />
+              </Animated.View>
+            </GestureDetector>
+          </View>
+
+          <View style={styles.cardActionsContainer}>
             <Button title='Keep Unread' variant='secondary' />
             <Button title=' Mark as Read' variant='primary' />
           </View>
@@ -118,23 +107,19 @@ const CatchUp = () => {
 export default CatchUp;
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#81438E',
     padding: 10,
   },
-  card: {
-    height: windowHeight - 220,
-    width: windowWidth - 60,
-    elevation: 5,
-    shadowColor: 'rgba(0, 0, 0, 1)',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
+  cardActionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    columnGap: 10,
   },
 });
