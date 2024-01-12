@@ -6,7 +6,7 @@ interface Props {
   animatedStyle: AnimatedStyleProp<ViewStyle>;
 }
 
-const ReadOverlay: React.FC<Props> = ({ animatedStyle }) => {
+const UnreadOverlay: React.FC<Props> = ({ animatedStyle }) => {
   return (
     <Animated.View
       style={[
@@ -14,9 +14,9 @@ const ReadOverlay: React.FC<Props> = ({ animatedStyle }) => {
         {
           ...StyleSheet.absoluteFillObject,
           justifyContent: 'center',
-          alignItems: 'baseline',
+          alignItems: 'flex-end',
           zIndex: 1,
-          backgroundColor: 'rgba(69, 142, 119, 1)',
+          backgroundColor: 'rgba(71, 126, 177, 1)',
           backfaceVisibility: 'visible',
           borderTopLeftRadius: 18,
           borderTopRightRadius: 18,
@@ -26,20 +26,20 @@ const ReadOverlay: React.FC<Props> = ({ animatedStyle }) => {
         },
       ]}
     >
-      <Ionicons name='checkmark-done-circle' size={48} color='white' />
+      <Ionicons name='arrow-undo-circle' size={48} color='white' />
       <Text
         style={{
           fontSize: 24,
           color: '#fff',
           fontWeight: 'bold',
           paddingTop: 10,
-          textAlign: 'left',
+          textAlign: 'right',
         }}
       >
-        Mark as {'\n'}Read
+        Keep {'\n'}Unread
       </Text>
     </Animated.View>
   );
 };
 
-export default ReadOverlay;
+export default UnreadOverlay;

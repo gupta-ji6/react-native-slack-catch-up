@@ -23,6 +23,7 @@ import { SWIPE_VELOCITY_X, threads } from './constants';
 import StackEnd from './components/StackEnd';
 import ThreadActions from './components/ThreadActions';
 import ReadOverlay from './components/ReadOverlay';
+import UnreadOverlay from './components/UnreadOverlay';
 
 const CatchUp = () => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
@@ -126,7 +127,17 @@ const CatchUp = () => {
     opacity: interpolate(
       currentThreadCardTranslateX.value,
       [0, windowWidth / 3],
-      [0, 1]
+      [0, 1],
+      Extrapolation.CLAMP
+    ),
+  }));
+
+  const unreadOverlayStyles = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      currentThreadCardTranslateX.value,
+      [0, -windowWidth / 3],
+      [0, 1],
+      Extrapolation.CLAMP
     ),
   }));
 
@@ -157,6 +168,7 @@ const CatchUp = () => {
                   entering={SlideInDown.springify().mass(0.5).damping(15)}
                 >
                   <ReadOverlay animatedStyle={readOverlayStyles} />
+                  <UnreadOverlay animatedStyle={unreadOverlayStyles} />
                   <ThreadCard thread={currentThread} />
                 </Animated.View>
               </GestureDetector>
