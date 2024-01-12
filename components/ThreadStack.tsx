@@ -228,58 +228,60 @@ const ThreadStack: React.FC<Props> = ({
   return (
     <React.Fragment>
       <View>
-        <View
-          style={{
-            paddingVertical: 30,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {showResetIconButton ? (
-            <BorderlessButton onPress={handleReset}>
-              <MaterialCommunityIcons
-                name='restart'
-                size={24}
-                color={
-                  currentThreadIndex !== 0
-                    ? 'white'
-                    : 'rgba(255, 255, 255, 0.5)'
-                }
-              />
-            </BorderlessButton>
-          ) : null}
+        {numberOfThreadsLeft !== 0 ? (
+          <View
+            style={{
+              paddingVertical: 30,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {showResetIconButton ? (
+              <BorderlessButton onPress={handleReset}>
+                <MaterialCommunityIcons
+                  name='restart'
+                  size={24}
+                  color={
+                    currentThreadIndex !== 0
+                      ? 'white'
+                      : 'rgba(255, 255, 255, 0.5)'
+                  }
+                />
+              </BorderlessButton>
+            ) : null}
 
-          {showNumberOfThreadsLeft && numberOfThreadsLeft !== 0 ? (
-            <Text
-              style={{
-                fontWeight: 'bold',
-                color: '#fff',
-                fontSize: 16,
-                fontVariant: ['tabular-nums'],
-              }}
-            >
-              {numberOfThreadsLeft} Left
-            </Text>
-          ) : null}
-
-          {showUndoButton ? (
-            <BorderlessButton onPress={handleUndo}>
+            {showNumberOfThreadsLeft ? (
               <Text
                 style={{
                   fontWeight: 'bold',
-                  color:
-                    currentThreadIndex !== 0
-                      ? '#fff'
-                      : 'rgba(255, 255, 255, 0.5)',
+                  color: '#fff',
                   fontSize: 16,
+                  fontVariant: ['tabular-nums'],
                 }}
               >
-                Undo
+                {numberOfThreadsLeft} Left
               </Text>
-            </BorderlessButton>
-          ) : null}
-        </View>
+            ) : null}
+
+            {showUndoButton ? (
+              <BorderlessButton onPress={handleUndo}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color:
+                      currentThreadIndex !== 0
+                        ? '#fff'
+                        : 'rgba(255, 255, 255, 0.5)',
+                    fontSize: 16,
+                  }}
+                >
+                  Undo
+                </Text>
+              </BorderlessButton>
+            ) : null}
+          </View>
+        ) : null}
         {nextThread ? (
           <Animated.View
             style={[nextThreadCardStyle]}
