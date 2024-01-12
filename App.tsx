@@ -7,6 +7,7 @@ import Animated, {
   interpolate,
   withSpring,
   Extrapolation,
+  runOnJS,
 } from 'react-native-reanimated';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import {
@@ -67,6 +68,9 @@ const CatchUp = () => {
       currentThreadCardTranslateX.value = withSpring(
         Math.sign(e.velocityX) * windowWidth * 2
       );
+
+      // Update the current and next thread indices. Since gestures run on UI thread, we need to update JS state with runOnJS function
+      runOnJS(setCurrentThreadIndex)(currentThreadIndex + 1);
     });
 
   const currentThreadCardStyle = useAnimatedStyle(() => {
