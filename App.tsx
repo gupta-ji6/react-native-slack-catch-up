@@ -18,6 +18,9 @@ const CatchUp = () => {
             onSwipeRight={(item) => {
               // console.warn('right', item.id);
             }}
+            allowSwipe={true}
+            showReset={true}
+            showActionButtons={true}
           />
         </View>
       </SafeAreaProvider>

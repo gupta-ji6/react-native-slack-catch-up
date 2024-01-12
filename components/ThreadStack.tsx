@@ -23,12 +23,18 @@ interface Props {
   data: Array<any>;
   onSwipeLeft?: (item: Thread) => void;
   onSwipeRight?: (item: Thread) => void;
+  showActionButtons?: boolean;
+  showReset?: boolean;
+  allowSwipe?: boolean;
 }
 
 const ThreadStack: React.FC<Props> = ({
   data = [],
   onSwipeLeft,
   onSwipeRight,
+  allowSwipe = true,
+  showActionButtons = true,
+  showReset = true,
 }) => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
   const [nextThreadIndex, setNextThreadIndex] = useState(
@@ -64,19 +70,31 @@ const ThreadStack: React.FC<Props> = ({
     .onTouchesUp(() => {
       currentThreadCardScale.value = withSpring(1);
     })
-    .onStart((event) => {
-      event.absoluteX = currentThreadCardTranslateX.value;
-    })
+    // .onStart((event) => {
+    //   event.absoluteX = currentThreadCardTranslateX.value;
+    // })
     .onChange((e) => {
-      currentThreadCardTranslateX.value =
-        e.changeX + currentThreadCardTranslateX.value;
+      if (!allowSwipe) return;
+
+      if (e.changeX > 0) {
+        currentThreadCardTranslateX.value = e.changeX + e.translationX;
+        return;
+      }
+
+      if (e.changeX < 0) {
+        currentThreadCardTranslateX.value = e.changeX + e.translationX;
+        return;
+      }
     })
     .onEnd((e) => {
+      if (!allowSwipe) return;
+
       // If the swipe velocity is less than the threshold, snap back to the center. Added Math.abs() to make sure the velocity is always positive.
       if (Math.abs(e.velocityX) < SWIPE_VELOCITY_X) {
         currentThreadCardTranslateX.value = withSpring(0, {
           damping: 15,
         });
+
         return;
       }
 
@@ -213,14 +231,14 @@ const ThreadStack: React.FC<Props> = ({
         ) : null}
       </View>
 
-      {currentThread ? (
+      {showActionButtons && currentThread ? (
         <ThreadActions
           onMarkRead={handleMarkRead}
           onMarkUnread={handleMarkUnread}
         />
       ) : null}
 
-      {!currentThread && !nextThread ? (
+      {!currentThread && !nextThread && showReset ? (
         <StackEnd onReset={handleReset} />
       ) : null}
     </React.Fragment>
