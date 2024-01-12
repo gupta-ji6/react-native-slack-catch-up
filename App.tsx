@@ -18,9 +18,10 @@ import {
   Gesture,
 } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Button from './components/Button';
 import ThreadCard from './components/ThreadCard';
 import { SWIPE_VELOCITY_X, threads } from './constants';
+import StackEnd from './components/StackEnd';
+import ThreadActions from './components/ThreadActions';
 
 const CatchUp = () => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
@@ -140,20 +141,21 @@ const CatchUp = () => {
               </Animated.View>
             ) : null}
 
-            <GestureDetector gesture={panGesture}>
-              <Animated.View
-                style={[currentThreadCardStyle]}
-                entering={SlideInDown.springify().mass(0.5).damping(15)}
-              >
-                <ThreadCard thread={currentThread} />
-              </Animated.View>
-            </GestureDetector>
+            {currentThread ? (
+              <GestureDetector gesture={panGesture}>
+                <Animated.View
+                  style={[currentThreadCardStyle]}
+                  entering={SlideInDown.springify().mass(0.5).damping(15)}
+                >
+                  <ThreadCard thread={currentThread} />
+                </Animated.View>
+              </GestureDetector>
+            ) : null}
           </View>
 
-          <View style={styles.cardActionsContainer}>
-            <Button title='Keep Unread' variant='secondary' />
-            <Button title=' Mark as Read' variant='primary' />
-          </View>
+          {currentThread ? <ThreadActions /> : null}
+
+          {!currentThread && !nextThread ? <StackEnd /> : null}
         </View>
       </SafeAreaProvider>
     </GestureHandlerRootView>
@@ -169,13 +171,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#81438E',
     padding: 10,
-  },
-  cardActionsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    columnGap: 10,
   },
 });
