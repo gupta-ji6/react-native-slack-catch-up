@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import { useState } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -6,7 +7,7 @@ import Animated, {
   interpolate,
   withSpring,
 } from 'react-native-reanimated';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import {
   GestureHandlerRootView,
   GestureDetector,
@@ -15,65 +16,73 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Button from './components/Button';
 import ThreadCard from './components/ThreadCard';
-
-const threads = [
-  {
-    id: 1,
-    uri: 'https://picsum.photos/200/300?random=1"',
-    backgroundColor: 'white',
-  },
-  {
-    id: 2,
-    uri: 'https://picsum.photos/200/300?random=2"',
-    backgroundColor: 'red',
-  },
-  {
-    id: 3,
-    uri: 'https://picsum.photos/200/300?random=3"',
-    backgroundColor: 'pink',
-  },
-  {
-    id: 4,
-    uri: 'https://picsum.photos/200/300?random=4"',
-    backgroundColor: 'green',
-  },
-  {
-    id: 5,
-    uri: 'https://picsum.photos/200/300?random=5"',
-    backgroundColor: 'blue',
-  },
-];
-
-const { width: windowWidth } = Dimensions.get('window');
+import { threads } from './constants';
 
 const CatchUp = () => {
-  const translateX = useSharedValue(0);
-  const scale = useSharedValue(1);
-  const rotate = useDerivedValue(
-    () => interpolate(translateX.value, [0, windowWidth * 2], [0, 60]) + 'deg'
+  const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
+  const [nextThreadIndex, setNextThreadIndex] = useState(
+    currentThreadIndex + 1
+  );
+  const { width: windowWidth } = useWindowDimensions();
+
+  const currentThread = threads[currentThreadIndex];
+  const nextThread = threads[nextThreadIndex];
+
+  const currentThreadCardTranslateX = useSharedValue(0);
+  const currentThreadCardScale = useSharedValue(1);
+  const currentThreadCardRotate = useDerivedValue(
+    () =>
+      interpolate(
+        currentThreadCardTranslateX.value,
+        [0, windowWidth * 2],
+        [0, 60]
+      ) + 'deg'
   );
 
   const panGesture = Gesture.Pan()
     .onTouchesDown(() => {
-      scale.value = withSpring(0.98);
+      currentThreadCardScale.value = withSpring(0.98);
     })
     .onTouchesUp(() => {
-      scale.value = withSpring(1);
+      currentThreadCardScale.value = withSpring(1);
     })
     .onStart((event) => {
-      event.absoluteX = translateX.value;
+      event.absoluteX = currentThreadCardTranslateX.value;
     })
     .onChange((e) => {
-      translateX.value = e.changeX + translateX.value;
+      currentThreadCardTranslateX.value =
+        e.changeX + currentThreadCardTranslateX.value;
     });
 
-  const cardStyle = useAnimatedStyle(() => {
+  const currentThreadCardStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        { translateX: translateX.value },
-        { rotate: rotate.value },
-        { scale: scale.value },
+        { translateX: currentThreadCardTranslateX.value },
+        { rotate: currentThreadCardRotate.value },
+        { scale: currentThreadCardScale.value },
       ],
+    };
+  });
+
+  const nextThreadCardStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: interpolate(
+            currentThreadCardTranslateX.value,
+            [-windowWidth, 0, windowWidth],
+            [1, 0.9, 1]
+          ),
+        },
+        {
+          translateY: -10,
+        },
+      ],
+      opacity: interpolate(
+        currentThreadCardTranslateX.value,
+        [-windowWidth / 2, 0, windowWidth / 2],
+        [1, 0.5, 1]
+      ),
     };
   });
 
@@ -82,14 +91,16 @@ const CatchUp = () => {
       <SafeAreaProvider style={{ flex: 1 }}>
         <View style={styles.root}>
           <View>
-            <ThreadCard
-              style={{ backgroundColor: 'green', position: 'absolute' }}
-              thread={}
-            />
+            <Animated.View style={[nextThreadCardStyle]}>
+              <ThreadCard
+                style={{ ...StyleSheet.absoluteFillObject }}
+                thread={nextThread}
+              />
+            </Animated.View>
 
             <GestureDetector gesture={panGesture}>
-              <Animated.View style={[cardStyle]}>
-                <ThreadCard thread={} />
+              <Animated.View style={[currentThreadCardStyle]}>
+                <ThreadCard thread={currentThread} />
               </Animated.View>
             </GestureDetector>
           </View>

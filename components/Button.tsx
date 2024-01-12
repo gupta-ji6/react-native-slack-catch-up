@@ -42,6 +42,7 @@ const Button: React.FC<Props> = ({ title, variant = 'primary', onPress }) => {
         style={{
           fontWeight: 'bold',
           color: variant === 'primary' ? 'white' : 'black',
+          fontSize: 16,
         }}
       >
         {title}
