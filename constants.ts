@@ -2,10 +2,11 @@ export interface Thread {
   id: number;
   backgroundColor: string;
 }
+
 export const threads: Thread[] = [
   {
     id: 1,
-    backgroundColor: '#F4EDE4',
+    backgroundColor: '#FED4BE',
   },
   {
     id: 2,
@@ -13,7 +14,7 @@ export const threads: Thread[] = [
   },
   {
     id: 3,
-    backgroundColor: '#2EB67D',
+    backgroundColor: '#DE8969',
   },
   {
     id: 4,
@@ -37,7 +38,7 @@ export const threads: Thread[] = [
   },
   {
     id: 9,
-    backgroundColor: '#FED4BE',
+    backgroundColor: '#2392A2',
   },
 ];
 

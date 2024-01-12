@@ -180,6 +180,10 @@ const ThreadStack: React.FC<Props> = ({
     runOnJS(onSwipeLeft)(currentThread);
   };
 
+  const handleReset = () => {
+    setCurrentThreadIndex(0);
+  };
+
   return (
     <React.Fragment>
       <View>
@@ -216,7 +220,9 @@ const ThreadStack: React.FC<Props> = ({
         />
       ) : null}
 
-      {!currentThread && !nextThread ? <StackEnd /> : null}
+      {!currentThread && !nextThread ? (
+        <StackEnd onReset={handleReset} />
+      ) : null}
     </React.Fragment>
   );
 };

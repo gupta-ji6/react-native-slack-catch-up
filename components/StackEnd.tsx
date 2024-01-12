@@ -7,7 +7,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import Button from './Button';
 
-const StackEnd = () => {
+interface Props {
+  onReset: () => void;
+}
+
+const StackEnd: React.FC<Props> = ({ onReset }) => {
   return (
     <Animated.View
       entering={ZoomIn}
@@ -25,8 +29,7 @@ const StackEnd = () => {
         entering={SlideInDown.springify().mass(0.5).damping(15).delay(250)}
         exiting={SlideOutDown.springify().mass(0.5).damping(15)}
       >
-        <Button title='Done' variant='secondary' />
-        <Button title='Reset' variant='primary' />
+        <Button title='Reset' variant='primary' onPress={onReset} />
       </Animated.View>
     </Animated.View>
   );
