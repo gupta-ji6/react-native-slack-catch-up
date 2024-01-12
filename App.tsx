@@ -10,7 +10,15 @@ const CatchUp = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider style={{ flex: 1 }}>
         <View style={styles.root}>
-          <ThreadStack data={threads} />
+          <ThreadStack
+            data={threads}
+            onSwipeLeft={(item) => {
+              // console.warn('left, ', item.id)
+            }}
+            onSwipeRight={(item) => {
+              // console.warn('right', item.id)
+            }}
+          />
         </View>
       </SafeAreaProvider>
     </GestureHandlerRootView>

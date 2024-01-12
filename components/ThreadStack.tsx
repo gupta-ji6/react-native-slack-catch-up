@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import ThreadCard from './ThreadCard';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { SWIPE_VELOCITY_X } from '../constants';
+import { SWIPE_VELOCITY_X, Thread } from '../constants';
 import ReadOverlay from './ReadOverlay';
 import UnreadOverlay from './UnreadOverlay';
 import ThreadActions from './ThreadActions';
@@ -21,9 +21,15 @@ import StackEnd from './StackEnd';
 
 interface Props {
   data: Array<any>;
+  onSwipeLeft?: (item: Thread) => void;
+  onSwipeRight?: (item: Thread) => void;
 }
 
-const ThreadStack: React.FC<Props> = ({ data = [] }) => {
+const ThreadStack: React.FC<Props> = ({
+  data = [],
+  onSwipeLeft,
+  onSwipeRight,
+}) => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
   const [nextThreadIndex, setNextThreadIndex] = useState(
     currentThreadIndex + 1
@@ -85,6 +91,9 @@ const ThreadStack: React.FC<Props> = ({ data = [] }) => {
           }
         }
       );
+
+      const onSwipe = e.velocityX > 0 ? onSwipeRight : onSwipeLeft;
+      onSwipe && runOnJS(onSwipe)(currentThread);
     });
 
   const nextThreadCardStyle = useAnimatedStyle(() => {
