@@ -6,6 +6,7 @@ import Animated, {
   useDerivedValue,
   interpolate,
   withSpring,
+  Extrapolation,
 } from 'react-native-reanimated';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import {
@@ -16,7 +17,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Button from './components/Button';
 import ThreadCard from './components/ThreadCard';
-import { threads } from './constants';
+import { SWIPE_VELOCITY_X, threads } from './constants';
 
 const CatchUp = () => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
@@ -52,6 +53,20 @@ const CatchUp = () => {
     .onChange((e) => {
       currentThreadCardTranslateX.value =
         e.changeX + currentThreadCardTranslateX.value;
+    })
+    .onEnd((e) => {
+      // If the swipe velocity is less than the threshold, snap back to the center. Added Math.abs() to make sure the velocity is always positive.
+      if (Math.abs(e.velocityX) < SWIPE_VELOCITY_X) {
+        currentThreadCardTranslateX.value = withSpring(0, {
+          damping: 15,
+        });
+        return;
+      }
+
+      // If the swipe velocity is greater than the threshold, animate the card off the screen depending on the swipe direction.
+      currentThreadCardTranslateX.value = withSpring(
+        Math.sign(e.velocityX) * windowWidth * 2
+      );
     });
 
   const currentThreadCardStyle = useAnimatedStyle(() => {
@@ -71,7 +86,8 @@ const CatchUp = () => {
           scale: interpolate(
             currentThreadCardTranslateX.value,
             [-windowWidth, 0, windowWidth],
-            [1, 0.9, 1]
+            [1, 0.9, 1],
+            Extrapolation.CLAMP // clamped to not go beyond the range
           ),
         },
         {
@@ -81,7 +97,8 @@ const CatchUp = () => {
       opacity: interpolate(
         currentThreadCardTranslateX.value,
         [-windowWidth / 2, 0, windowWidth / 2],
-        [1, 0.5, 1]
+        [1, 0.5, 1],
+        Extrapolation.CLAMP // clamped to not go beyond the range
       ),
     };
   });

@@ -25,3 +25,5 @@ export const threads = [
     backgroundColor: '#E01E5A',
   },
 ];
+
+export const SWIPE_VELOCITY_X = 800;
