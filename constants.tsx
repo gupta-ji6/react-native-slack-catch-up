@@ -24,6 +24,26 @@ export const threads = [
     uri: 'https://picsum.photos/200/300?random=5"',
     backgroundColor: '#E01E5A',
   },
+  {
+    id: 6,
+    uri: 'https://picsum.photos/200/300?random=6"',
+    backgroundColor: '#0E9DD3',
+  },
+  {
+    id: 7,
+    uri: 'https://picsum.photos/200/300?random=7"',
+    backgroundColor: '#78D7DD',
+  },
+  {
+    id: 8,
+    uri: 'https://picsum.photos/200/300?random=8"',
+    backgroundColor: '#729C1A',
+  },
+  {
+    id: 9,
+    uri: 'https://picsum.photos/200/300?random=9"',
+    backgroundColor: '#FED4BE',
+  },
 ];
 
 export const SWIPE_VELOCITY_X = 800;
