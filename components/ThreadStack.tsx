@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, useWindowDimensions, StyleSheet } from 'react-native';
+import { View, useWindowDimensions, StyleSheet, Text } from 'react-native';
 import Animated, {
   Extrapolation,
   SlideInDown,
+  SlideOutUp,
   interpolate,
   runOnJS,
   useAnimatedStyle,
@@ -11,9 +12,14 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import ThreadCard from './ThreadCard';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+  BorderlessButton,
+  Gesture,
+  GestureDetector,
+} from 'react-native-gesture-handler';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SWIPE_VELOCITY_X, Thread } from '../constants';
+import ThreadCard from './ThreadCard';
 import ReadOverlay from './ReadOverlay';
 import UnreadOverlay from './UnreadOverlay';
 import ThreadActions from './ThreadActions';
@@ -23,12 +29,15 @@ interface Props {
   data: Array<any>;
   onSwipeLeft?: (item: Thread) => void;
   onSwipeRight?: (item: Thread) => void;
-  showActionButtons?: boolean;
-  showReset?: boolean;
   allowSwipe?: boolean;
+  showActionButtons?: boolean;
+  showNumberOfThreadsLeft?: boolean;
+  showUndoButton?: boolean;
+  showResetIconButton?: boolean;
   stackEnd: {
     emoji?: string;
     heading?: string;
+    showReset?: boolean;
   };
 }
 
@@ -38,8 +47,10 @@ const ThreadStack: React.FC<Props> = ({
   onSwipeRight,
   allowSwipe = true,
   showActionButtons = true,
-  showReset = true,
-  stackEnd = { emoji: '🙌', heading: 'All Caught Up.' },
+  showNumberOfThreadsLeft = true,
+  showUndoButton = true,
+  stackEnd = { emoji: '🙌', heading: 'All Caught Up.', showReset: true },
+  showResetIconButton = true,
 }) => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
   const [nextThreadIndex, setNextThreadIndex] = useState(
@@ -201,12 +212,74 @@ const ThreadStack: React.FC<Props> = ({
   };
 
   const handleReset = () => {
+    if (currentThreadIndex === 0) return;
+
     setCurrentThreadIndex(0);
   };
+
+  const handleUndo = () => {
+    if (currentThreadIndex === 0) return;
+
+    setCurrentThreadIndex(currentThreadIndex - 1);
+  };
+
+  const numberOfThreadsLeft = data.length - currentThreadIndex;
 
   return (
     <React.Fragment>
       <View>
+        <View
+          style={{
+            paddingVertical: 30,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          {showResetIconButton ? (
+            <BorderlessButton onPress={handleReset}>
+              <MaterialCommunityIcons
+                name='restart'
+                size={24}
+                color={
+                  currentThreadIndex !== 0
+                    ? 'white'
+                    : 'rgba(255, 255, 255, 0.5)'
+                }
+              />
+            </BorderlessButton>
+          ) : null}
+
+          {showNumberOfThreadsLeft && numberOfThreadsLeft !== 0 ? (
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: '#fff',
+                fontSize: 16,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
+              {numberOfThreadsLeft} Left
+            </Text>
+          ) : null}
+
+          {showUndoButton ? (
+            <BorderlessButton onPress={handleUndo}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color:
+                    currentThreadIndex !== 0
+                      ? '#fff'
+                      : 'rgba(255, 255, 255, 0.5)',
+                  fontSize: 16,
+                }}
+              >
+                Undo
+              </Text>
+            </BorderlessButton>
+          ) : null}
+        </View>
         {nextThread ? (
           <Animated.View
             style={[nextThreadCardStyle]}
@@ -240,7 +313,7 @@ const ThreadStack: React.FC<Props> = ({
         />
       ) : null}
 
-      {showReset && !currentThread && !nextThread ? (
+      {stackEnd.showReset && !currentThread && !nextThread ? (
         <StackEnd
           onReset={handleReset}
           emoji={stackEnd.emoji}

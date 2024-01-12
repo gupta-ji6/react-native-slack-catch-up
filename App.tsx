@@ -19,8 +19,15 @@ const CatchUp = () => {
               // console.warn('right', item.id);
             }}
             allowSwipe={true}
-            showReset={true}
+            showResetIconButton={true}
+            showUndoButton={true}
+            showNumberOfThreadsLeft={true}
             showActionButtons={true}
+            stackEnd={{
+              emoji: '🙌',
+              heading: 'All Caught Up.',
+              showReset: true,
+            }}
           />
         </View>
       </SafeAreaProvider>
