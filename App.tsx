@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,6 +8,8 @@ import Animated, {
   withSpring,
   Extrapolation,
   runOnJS,
+  withTiming,
+  SlideInDown,
 } from 'react-native-reanimated';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import {
@@ -65,13 +67,24 @@ const CatchUp = () => {
       }
 
       // If the swipe velocity is greater than the threshold, animate the card off the screen depending on the swipe direction.
-      currentThreadCardTranslateX.value = withSpring(
-        Math.sign(e.velocityX) * windowWidth * 2
+      currentThreadCardTranslateX.value = withTiming(
+        Math.sign(e.velocityX) * windowWidth,
+        { duration: 250 },
+        (isFinished) => {
+          if (isFinished) {
+            // Update the current and next thread indices. Since gestures run on UI thread, we need to update JS state with runOnJS function
+            runOnJS(setCurrentThreadIndex)(currentThreadIndex + 1);
+          }
+        }
       );
-
-      // Update the current and next thread indices. Since gestures run on UI thread, we need to update JS state with runOnJS function
-      runOnJS(setCurrentThreadIndex)(currentThreadIndex + 1);
     });
+
+  // update the next thread index when the current thread index changes
+  useEffect(() => {
+    // reset the current thread card position when the current thread index changes
+    currentThreadCardTranslateX.value = 0;
+    setNextThreadIndex(currentThreadIndex + 1);
+  }, [currentThreadIndex, currentThreadCardTranslateX]);
 
   const currentThreadCardStyle = useAnimatedStyle(() => {
     return {
@@ -95,7 +108,7 @@ const CatchUp = () => {
           ),
         },
         {
-          translateY: -10,
+          translateY: -16,
         },
       ],
       opacity: interpolate(
@@ -112,15 +125,26 @@ const CatchUp = () => {
       <SafeAreaProvider style={{ flex: 1 }}>
         <View style={styles.root}>
           <View>
-            <Animated.View style={[nextThreadCardStyle]}>
-              <ThreadCard
-                style={{ ...StyleSheet.absoluteFillObject }}
-                thread={nextThread}
-              />
-            </Animated.View>
+            {nextThread ? (
+              <Animated.View
+                style={[nextThreadCardStyle]}
+                entering={SlideInDown.springify()
+                  .mass(0.5)
+                  .damping(15)
+                  .delay(250)}
+              >
+                <ThreadCard
+                  style={{ ...StyleSheet.absoluteFillObject }}
+                  thread={nextThread}
+                />
+              </Animated.View>
+            ) : null}
 
             <GestureDetector gesture={panGesture}>
-              <Animated.View style={[currentThreadCardStyle]}>
+              <Animated.View
+                style={[currentThreadCardStyle]}
+                entering={SlideInDown.springify().mass(0.5).damping(15)}
+              >
                 <ThreadCard thread={currentThread} />
               </Animated.View>
             </GestureDetector>
