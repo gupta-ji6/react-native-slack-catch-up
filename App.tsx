@@ -22,6 +22,7 @@ import ThreadCard from './components/ThreadCard';
 import { SWIPE_VELOCITY_X, threads } from './constants';
 import StackEnd from './components/StackEnd';
 import ThreadActions from './components/ThreadActions';
+import ReadOverlay from './components/ReadOverlay';
 
 const CatchUp = () => {
   const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
@@ -121,6 +122,14 @@ const CatchUp = () => {
     };
   });
 
+  const readOverlayStyles = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      currentThreadCardTranslateX.value,
+      [0, windowWidth / 3],
+      [0, 1]
+    ),
+  }));
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider style={{ flex: 1 }}>
@@ -147,6 +156,7 @@ const CatchUp = () => {
                   style={[currentThreadCardStyle]}
                   entering={SlideInDown.springify().mass(0.5).damping(15)}
                 >
+                  <ReadOverlay animatedStyle={readOverlayStyles} />
                   <ThreadCard thread={currentThread} />
                 </Animated.View>
               </GestureDetector>
