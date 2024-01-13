@@ -1,7 +1,4 @@
-export interface Thread {
-  id: number;
-  backgroundColor: string;
-}
+import { Thread } from './types';
 
 export const threads: Thread[] = [
   {

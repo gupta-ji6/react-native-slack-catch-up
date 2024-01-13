@@ -1,14 +1,12 @@
 import { StyleSheet } from 'react-native';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import Button from './Button';
-import React from 'react';
+import { ThreadActionsProps } from '../types';
 
-interface Props {
-  onMarkRead: () => void;
-  onMarkUnread: () => void;
-}
-
-const ThreadActions: React.FC<Props> = ({ onMarkRead, onMarkUnread }) => {
+const ThreadActions: React.FC<ThreadActionsProps> = ({
+  onMarkRead,
+  onMarkUnread,
+}) => {
   return (
     <Animated.View
       style={styles.cardActionsContainer}

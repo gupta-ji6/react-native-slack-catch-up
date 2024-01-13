@@ -12,32 +12,14 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { SWIPE_VELOCITY_X, Thread } from '../constants';
+import { SWIPE_VELOCITY_X } from '../constants';
 import ThreadCard from './ThreadCard';
 import ReadOverlay from './ReadOverlay';
 import UnreadOverlay from './UnreadOverlay';
 import ThreadActions from './ThreadActions';
 import StackEnd from './StackEnd';
 import Header from './Header';
-
-interface ThreadStackProps {
-  data: Array<any>;
-  onSwipeLeft?: (item: Thread) => void;
-  onSwipeRight?: (item: Thread) => void;
-  allowSwipe?: boolean;
-  header?: {
-    visible: boolean;
-    showNumberOfThreadsLeft: boolean;
-    showUndoButton: boolean;
-    showResetIconButton: boolean;
-  };
-  showActionButtons?: boolean;
-  stackEnd?: {
-    emoji: string;
-    heading: string;
-    showReset: boolean;
-  };
-}
+import { ThreadStackProps } from '../types';
 
 const ThreadStack: React.FC<ThreadStackProps> = ({
   data = [],

@@ -1,24 +1,18 @@
-import { GestureResponderEvent, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-
-import { Text } from 'react-native';
-import React from 'react';
-
-interface Props {
-  title: string;
-  variant?: 'primary' | 'secondary';
-  onPress?:
-    | ((event: GestureResponderEvent) => void)
-    | Animated.SharedValue<(event: GestureResponderEvent) => void>;
-}
+import { ButtonProps } from '../types';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-const Button: React.FC<Props> = ({ title, variant = 'primary', onPress }) => {
+const Button: React.FC<ButtonProps> = ({
+  title,
+  variant = 'primary',
+  onPress,
+}) => {
   const buttonScale = useSharedValue(1);
 
   const buttonStyles = useAnimatedStyle(() => {
@@ -31,19 +25,20 @@ const Button: React.FC<Props> = ({ title, variant = 'primary', onPress }) => {
     <AnimatedPressable
       style={[
         styles.button,
-        { backgroundColor: variant === 'primary' ? '#398268' : '#fff' },
         buttonStyles,
+        { backgroundColor: variant === 'primary' ? '#398268' : '#fff' },
       ]}
       onPressIn={() => (buttonScale.value = withSpring(0.94))}
       onPressOut={() => (buttonScale.value = withSpring(1))}
       onPress={onPress}
     >
       <Text
-        style={{
-          fontWeight: 'bold',
-          color: variant === 'primary' ? 'white' : 'black',
-          fontSize: 16,
-        }}
+        style={[
+          styles.title,
+          {
+            color: variant === 'primary' ? 'white' : 'black',
+          },
+        ]}
       >
         {title}
       </Text>
@@ -73,5 +68,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.7,
     shadowRadius: 1,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

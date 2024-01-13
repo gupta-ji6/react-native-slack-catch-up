@@ -1,27 +1,20 @@
-import {
-  StyleSheet,
-  View,
-  StyleProp,
-  ViewStyle,
-  Dimensions,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, Text, useWindowDimensions } from 'react-native';
 import React from 'react';
+import { ThreadCardProps } from '../types';
 
-interface Props {
-  style?: StyleProp<ViewStyle>;
-  thread: { id: number; uri: string; backgroundColor: string };
-}
+const ThreadCard: React.FC<ThreadCardProps> = ({ style, thread }) => {
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
-
-const ThreadCard: React.FC<Props> = ({ style, thread }) => {
   return (
     <View
       style={[
         styles.card,
         style,
-        { backgroundColor: thread.backgroundColor ?? '#fff' },
+        {
+          backgroundColor: thread.backgroundColor ?? '#fff',
+          height: windowHeight - 220,
+          width: windowWidth - 60,
+        },
       ]}
     >
       <Text style={styles.hash}>#{thread.id}</Text>
@@ -33,8 +26,6 @@ export default ThreadCard;
 
 const styles = StyleSheet.create({
   card: {
-    height: windowHeight - 220,
-    width: windowWidth - 60,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
     borderBottomLeftRadius: 18,

@@ -6,28 +6,18 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 import Button from './Button';
+import { StackEndProps } from '../types';
 
-interface Props {
-  onReset: () => void;
-  emoji?: string;
-  heading?: string;
-}
-
-const StackEnd: React.FC<Props> = ({
+const StackEnd: React.FC<StackEndProps> = ({
   onReset,
   emoji = '🙌',
   heading = 'All Caught Up.',
 }) => {
   return (
-    <Animated.View
-      entering={ZoomIn}
-      style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }]}
-    >
-      <View style={{ alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-        <Text style={{ fontSize: 64 }}>{emoji}</Text>
-        <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold' }}>
-          {heading}
-        </Text>
+    <Animated.View entering={ZoomIn} style={styles.container}>
+      <View style={styles.body}>
+        <Text style={styles.emoji}>{emoji}</Text>
+        <Text style={styles.heading}>{heading}</Text>
       </View>
 
       <Animated.View
@@ -44,6 +34,11 @@ const StackEnd: React.FC<Props> = ({
 export default StackEnd;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -51,5 +46,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     columnGap: 10,
     paddingTop: 60,
+  },
+  body: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  emoji: {
+    fontSize: 64,
+  },
+  heading: {
+    color: '#fff',
+    fontSize: 28,
+    fontWeight: 'bold',
   },
 });

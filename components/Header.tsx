@@ -2,20 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-interface Props {
-  showNumberOfThreadsLeft?: boolean;
-  showUndoButton?: boolean;
-  showResetIconButton?: boolean;
-  numberOfThreadsLeft: number;
-  currentThreadIndex: number;
-  onReset: () => void;
-  onUndo: () => void;
-}
+import { HeaderProps } from '../types';
 
 const disbaledColor = 'rgba(255, 255, 255, 0.5)';
 
-const Header: React.FC<Props> = ({
+const Header: React.FC<HeaderProps> = ({
   showNumberOfThreadsLeft = true,
   showResetIconButton = true,
   showUndoButton = true,
