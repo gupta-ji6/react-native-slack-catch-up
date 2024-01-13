@@ -1,15 +1,15 @@
 import 'react-native-gesture-handler';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { threads } from './constants';
 import ThreadStack from './components/ThreadStack';
 
 const CatchUp = () => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider style={{ flex: 1 }}>
-        <View style={styles.root}>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.root}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <ThreadStack
             data={threads}
             onSwipeLeft={(item) => {
@@ -18,20 +18,23 @@ const CatchUp = () => {
             onSwipeRight={(item) => {
               // console.warn('right', item.id);
             }}
-            allowSwipe={true}
-            showResetIconButton={true}
-            showUndoButton={true}
-            showNumberOfThreadsLeft={true}
-            showActionButtons={true}
+            allowSwipe
+            showActionButtons
             stackEnd={{
               emoji: '🙌',
               heading: 'All Caught Up.',
               showReset: true,
             }}
+            header={{
+              visible: true,
+              showNumberOfThreadsLeft: true,
+              showUndoButton: true,
+              showResetIconButton: true,
+            }}
           />
-        </View>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+        </GestureHandlerRootView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
