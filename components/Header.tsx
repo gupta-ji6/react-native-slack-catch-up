@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import Animated, { SlideInDown } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { HeaderProps } from '../types';
 
@@ -20,7 +21,10 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <React.Fragment>
       {numberOfThreadsLeft !== 0 ? (
-        <View style={styles.container}>
+        <Animated.View
+          entering={SlideInDown.springify().mass(0.5).damping(15).delay(250)}
+          style={styles.container}
+        >
           {showResetIconButton ? (
             <BorderlessButton onPress={onReset} style={styles.reset}>
               <MaterialCommunityIcons
@@ -50,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
               </Text>
             </BorderlessButton>
           ) : null}
-        </View>
+        </Animated.View>
       ) : null}
     </React.Fragment>
   );
