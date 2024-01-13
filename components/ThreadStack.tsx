@@ -81,10 +81,10 @@ const ThreadStack: React.FC<Props> = ({
 
   const panGesture = Gesture.Pan()
     .onTouchesDown(() => {
-      currentThreadCardScale.value = withSpring(0.98);
+      currentThreadCardScale.value = withTiming(0.98);
     })
     .onTouchesUp(() => {
-      currentThreadCardScale.value = withSpring(1);
+      currentThreadCardScale.value = withTiming(1);
     })
     .onChange((e) => {
       if (!allowSwipe) return;
