@@ -11,7 +11,7 @@ Slack's upcoming "Catch Up" tinder-like mobile app feature shared [here](https:/
 
 ## 📱 Demo
 
-<!-- Insert demo video here -->
+![iOS Demo](./assets/full-demo.mp4)
 
 ## Features
 
