@@ -11,7 +11,7 @@ Slack's upcoming "Catch Up" tinder-like mobile app feature shared [here](https:/
 
 ## 📱 Demo
 
-![iOS Demo](https://github.com/gupta-ji6/react-native-slack-catch-up/assets/21218732/10592701-75c6-45e7-90a7-41424d1bd7b5)
+https://github.com/gupta-ji6/react-native-slack-catch-up/assets/21218732/10592701-75c6-45e7-90a7-41424d1bd7b5
 
 ## Features
 
