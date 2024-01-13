@@ -63,6 +63,50 @@ The top most card smoothly scales up & down on touch to make the user feel it's 
 
 ![Zoom-In Entrance Of Stack End](./assets/stack-end.gif)
 
+## Components & API Reference
+
+### `<ThreadStack />`
+
+#### Usage
+
+```tsx
+    <ThreadStack
+        data={threads}
+        onSwipeLeft={(item) => {
+            console.warn('left, ', item);
+        }}
+        onSwipeRight={(item) => {
+            console.warn('right', item);
+        }}
+        allowSwipe
+        showActionButtons
+        stackEnd={{
+            emoji: '🙌',
+            heading: 'All Caught Up.',
+            showReset: true,
+        }}
+        header={{
+            visible: true,
+            showNumberOfThreadsLeft: true,
+            showUndoButton: true,
+            showResetIconButton: true,
+        }}
+    />
+```
+
+#### Properties
+
+| Name                | Description                                      | Default                                                                                                                          | Required |
+| ------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `data`              | The array of data to be rendered in the stack    | []                                                                                                                               | Required |
+| `onSwipeLeft`       | Callback on swipe left action                    |                                                                                                                                  | Optional |
+| `onSwipeRight`      | Callback on swipe right action                   |                                                                                                                                  | Optional |
+| `allowSwipe`        | Whether to allow swipe gestures or not           | true                                                                                                                             | Optional |
+| `showActionButtons` | Whether to show the action buttons at the bottom | true                                                                                                                             | Optional |
+| `header`            | Configuration of header component                | ```{    visible :  true ,    showNumberOfThreadsLeft :  true ,    showUndoButton :  true ,    showResetIconButton :  true , }``` | Optional |
+| `stackEnd`          | Configuration for the stack end view             | ```{    emoji :   ' 🙌 ' ,    heading :   ' All Caught Up. ' ,    showReset :  true , }```                                        |
+
+
 ## 🛠️ Built With
 
 > [!NOTE]  
