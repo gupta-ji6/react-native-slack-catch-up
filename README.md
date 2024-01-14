@@ -41,27 +41,37 @@ The card stack smoothly slides in down on render. The action buttons below & hea
 
 The top most card smoothly scales up & down on touch to make the user feel it's interactive.
 
-![Top Card Touch Up & Touch Down Interaction](./assets/top-card-touch.gif)
+![Top Card Touch Up & Touch Down Interaction](./assets/top-card.gif)
 
 ### 3. 👀 Next Card Peek
 
-![Next Card Peek](./assets/next-card-peek.gif)
+It's a design principle to always show a part of next item in a list, to give a hint to user that there's more to explore.
+
+![Next Card Peek](./assets/next-card.gif)
 
 ### 4. 🫰 Snap Back To Center On Low Swipe Velocity
 
-![Snap Back To Center On Low Swipe Velocity](./assets/snap-back.gif)
+The card smoothly snaps back to it's position if the swipe velocity is less than a certain configurable threshold.
+
+![Snap Back To Center On Low Swipe Velocity](./assets/snap.gif)
 
 ### 5. 👉👈 Animated Swipe Overlays
+
+When user swipes in either direction, an overlay of the action is shown with animated opacity. the next card also scales up simultaneously as swipes away top card.
 
 ![Animated Swipe Overlays](./assets/overlay.gif)
 
 ### 6. 🧃 Juicy Buttons
 
-![Juicy Buttons](./assets/juicy-buttons.gif)
+Buttons you wanna keep smashing because it feels like they're asking for it.
+
+![Juicy Buttons](./assets/button.gif)
 
 ### 7. 🔍 Zoom-In Entrance Of Stack End
 
-![Zoom-In Entrance Of Stack End](./assets/stack-end.gif)
+When the stack ends, the end view enters with a smooth zoom-in animation & an action button slides in from the bottom.
+
+![Zoom-In Entrance Of Stack End](./assets/end.gif)
 
 ## Components & API Reference
 
